@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Fixed the modification of the original timestamp when decompressing folders ([#190])
+- Fixed the File Editor not scrolling far enough to reveal a matched search result ([#39])
 
 ## [1.6.1] - 2026-02-14
 ### Changed
@@ -117,6 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [#27]: https://github.com/FossifyOrg/File-Manager/issues/27
 [#37]: https://github.com/FossifyOrg/File-Manager/issues/37
+[#39]: https://github.com/FossifyOrg/File-Manager/issues/39
 [#76]: https://github.com/FossifyOrg/File-Manager/issues/76
 [#80]: https://github.com/FossifyOrg/File-Manager/issues/80
 [#85]: https://github.com/FossifyOrg/File-Manager/issues/85

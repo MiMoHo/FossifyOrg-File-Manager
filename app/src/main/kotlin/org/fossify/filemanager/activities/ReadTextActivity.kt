@@ -34,6 +34,9 @@ class ReadTextActivity : SimpleActivity() {
         private const val SELECT_SAVE_FILE_INTENT = 1
         private const val SELECT_SAVE_FILE_AND_EXIT_INTENT = 2
         private const val KEY_UNSAVED_TEXT = "KEY_UNSAVED_TEXT"
+
+        // Position the matched line one quarter of the viewport height from the top.
+        private const val SCROLL_TOP_MARGIN_DIVISOR = 4
     }
 
     private val binding by viewBinding(ActivityReadTextBinding::inflate)
@@ -372,6 +375,7 @@ class ReadTextActivity : SimpleActivity() {
         if (searchMatches.isNotEmpty()) {
             binding.readTextView.requestFocus()
             binding.readTextView.setSelection(searchMatches.getOrNull(searchIndex) ?: 0)
+            scrollToSelection()
         }
 
         searchQueryET.postDelayed({
@@ -410,8 +414,24 @@ class ReadTextActivity : SimpleActivity() {
         if (searchMatches.isNotEmpty()) {
             editText.requestFocus()
             editText.setSelection(searchMatches.getOrNull(searchIndex) ?: 0)
+            scrollToSelection()
         } else {
             hideKeyboard()
+        }
+    }
+
+    // The default focus/cursor-based scrolling only brings the match to the very
+    // bottom edge of the scroll viewport (which, with edge-to-edge, sits behind the
+    // navigation bar / keyboard), so explicitly position the match near the top.
+    private fun scrollToSelection() {
+        val editText = binding.readTextView
+        editText.post {
+            val layout = editText.layout ?: return@post
+            val offset = editText.selectionStart.coerceAtLeast(0)
+            val line = layout.getLineForOffset(offset)
+            val lineTop = layout.getLineTop(line) + editText.totalPaddingTop
+            val target = (lineTop - binding.readTextHolder.height / SCROLL_TOP_MARGIN_DIVISOR).coerceAtLeast(0)
+            binding.readTextHolder.smoothScrollTo(0, target)
         }
     }
 }
